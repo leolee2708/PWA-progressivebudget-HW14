@@ -1,7 +1,9 @@
-const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB ;
-const request = indexedDb.open('budget', 1);
 
-var db;
+let db;
+const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB ;
+const request = indexedDB.open('budget', 1);
+
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js')
