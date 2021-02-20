@@ -2,6 +2,14 @@ const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexe
 const request = indexedDb.open('budget', 1);
 
 var db;
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then((reg) => {
+          console.log('Service worker registered.', reg);
+        });
+    });
+  }
 request.onupgradeneeded = function (event) {
     const db = event.target.result;
     db.createObjectStore("pending", { autoIncrement: true });
@@ -24,8 +32,8 @@ request.onerror = function (event) {
 // Create and submit a transaction on the pending db with function saving,read and write
 function saveRecord(record) {
 
-    const transactions = db.transaction(["pending"], "readwrite");
-    const store = transactions.objectStore("pending");
+    const transaction = db.transaction(["pending"], "readwrite");
+    const store = transaction.objectStore("pending");
     //add a transaction using add method
     store.add(record);
 };
@@ -33,8 +41,8 @@ function saveRecord(record) {
 
 function checkDatabase() {
     // looking and access your transaction databases
-    const transactions = db.transaction(["pending"], "readwrite");
-    const store = transactions.objectStore("pending");
+    const transaction = db.transaction(["pending"], "readwrite");
+    const store = transaction.objectStore("pending");
     const getAll = store.getAll();
 
     getAll.onsuccess = function () {
