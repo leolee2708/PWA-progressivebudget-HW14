@@ -1,3 +1,9 @@
+const indexedDB =
+    window.indexedDB ||
+    window.mozIndexedDB ||
+    window.webkitIndexedDB ||
+    window.msIndexedDB ||
+    window.shimIndexedDB;
 var db;
 const request = indexedDb.open('budget', 1);
 
@@ -46,7 +52,7 @@ function checkDatabase() {
                     "Content-Type": "application/json"
                 }
             })
-                .then(response => response.json())
+                .then(response => {return response.json()})
                 .then(() => {
                     //if sucess, will "write" a transaction onto your pending db 
                     const transactions = db.transaction(["pending"], "readwrite");
