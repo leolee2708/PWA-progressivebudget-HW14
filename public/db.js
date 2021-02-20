@@ -1,12 +1,7 @@
-const indexedDB =
-    window.indexedDB ||
-    window.mozIndexedDB ||
-    window.webkitIndexedDB ||
-    window.msIndexedDB ||
-    window.shimIndexedDB;
-var db;
+const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB ;
 const request = indexedDb.open('budget', 1);
 
+var db;
 request.onupgradeneeded = function (event) {
     const db = event.target.result;
     db.createObjectStore("pending", { autoIncrement: true });

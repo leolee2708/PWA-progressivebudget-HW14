@@ -1,15 +1,15 @@
-const CACHE_NAME = "static-cache-v2";
-const DATA_CACHE_NAME = "data-cache-v1";
+const STATIC_CACHE = "static-cache-v1";
+const RUNTIME_CACHE = "runtime-cache";
 const FILES_TO_CACHE = [
     "/",
     "/db.js",
+    "/index.html",
     "/index.js",
     "/manifest.json",
     "/styles.css",
     "/icons/icon-192x192.png",
     "/icons/icon-512x512.png",
     
-
 ];
 
 // install
@@ -20,22 +20,22 @@ self.addEventListener("install", function (evt) {
     //   );
     // pre cache all static assets
     evt.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => 
+        caches.open(STATIC_CACHE).
+        then(cache => cache.addAll(FILES_TO_CACHE))
         
-        {console.log("opencache");
-             return cache.addAll(FILES_TO_CACHE) })
+             
     );
     // tell the browser to activate this service worker immediately once it
     // has finished installing
       self.skipWaiting();
 });
-activate
+
 self.addEventListener("activate", function(evt) {
   evt.waitUntil(
     caches.keys().then(keyList => {
       return Promise.all(
         keyList.map(key => {
-          if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
+          if (key !== STATIC_CACHE && key !== RUNTIME_CACHE) {
             console.log("Removing old cache data", key);
             return caches.delete(key);
           }
@@ -50,7 +50,7 @@ self.addEventListener("activate", function(evt) {
 self.addEventListener("fetch", function (evt) {
     if (evt.request.url.includes("/api/")) {
         evt.respondWith(
-            caches.open(DATA_CACHE_NAME).then(cache => {
+            caches.open(RUNTIME_CACHE).then(cache => {
                 return fetch(evt.request)
                     .then(response => {
                         // If the response was good, clone it and store it in the cache.
