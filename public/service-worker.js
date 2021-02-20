@@ -30,22 +30,23 @@ self.addEventListener("install", function (evt) {
       self.skipWaiting();
 });
 
-self.addEventListener("activate", function(evt) {
-  evt.waitUntil(
-    caches.keys().then(keyList => {
-      return Promise.all(
-        keyList.map(key => {
-          if (key !== STATIC_CACHE && key !== RUNTIME_CACHE) {
-            console.log("Removing old cache data", key);
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
+// self.addEventListener("activate", function(evt) {
+//   evt.waitUntil(
+//     caches.keys().then(keyList => {
+//       return Promise.all(
+//         keyList.map(key => {
+//           if (key !== STATIC_CACHE && key !== RUNTIME_CACHE) {
+//             console.log("Removing old cache data", key);
+//             return caches.delete(key);
+//           }
+//         })
+//       );
+//     })
+//   );
 
-  self.clients.claim();
-});
+//   self.clients.claim();
+// });
+
 // fetch
 self.addEventListener("fetch", function (evt) {
     if (evt.request.url.includes("/api/")) {
