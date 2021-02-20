@@ -29,8 +29,8 @@ request.onerror = function (event) {
 // Create and submit a transaction on the pending db with function saving,read and write
 function saveRecord(record) {
 
-    const transaction = db.transaction(["pending"], "readwrite");
-    const store = transaction.objectStore("pending");
+    const transactions = db.transaction(["pending"], "readwrite");
+    const store = transactions.objectStore("pending");
     //add a transaction using add method
     store.add(record);
 };
