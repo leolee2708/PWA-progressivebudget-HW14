@@ -4,14 +4,14 @@ const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexe
 const request = indexedDB.open('budget', 1);
 
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then((reg) => {
-          console.log('Service worker registered.', reg);
-        });
-    });
-  }
+// if ('serviceWorker' in navigator) {
+//     window.addEventListener('load', () => {
+//       navigator.serviceWorker.register('/service-worker.js')
+//         .then((reg) => {
+//           console.log('Service worker registered.', reg);
+//         });
+//     });
+//   }
 request.onupgradeneeded = function (event) {
     const db = event.target.result;
     db.createObjectStore("pending", { autoIncrement: true });
